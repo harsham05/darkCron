@@ -65,5 +65,7 @@ if __name__ == "__main__":
     parser.add_argument('--dumpPath', required=True, help='absolute path to dump Dir')
     args = parser.parse_args()
 
-    if args.inCSV and args.outCSV and args.dumpPath: 
+    if args.inCSV and args.outCSV and args.dumpPath:
         mover(args.inCSV, args.outCSV, args.dumpPath)
+        print "Finished moving fetched files to DeDup Dump Path", args.dumpPath
+        print "Running parser-indexer now"
