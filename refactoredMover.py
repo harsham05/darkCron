@@ -32,7 +32,7 @@ def mover(inCSV, outCSV, dumpPath):
                 domain = row[1].strip()
                 URL = row[3].strip()
                 path = row[4].strip()
-                record = [domain, URL, "", ""]
+                record = [domain, URL, " ", " "]
                 
                 hashedAdURL = hashlib.sha256(URL).hexdigest().upper()
 
