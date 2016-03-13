@@ -19,11 +19,11 @@
 
 import argparse, csv, hashlib, os, shutil
 
-def mover(inCSV, outCSV, nutchDumpPath):
+def mover(inCSV, outCSV, dumpPath):
 
     with open(outCSV, "wb") as outF:
         writer = csv.writer(outF)
-        writer.writerow(["onionDomain", "onionAdURL", "FinalDumpPath"]) #"onionAdHashedFilePath"
+        writer.writerow(["onionDomain", "onionAdURL", "onionPageTitle", "oldPath", "FinalDumpPath"]) #"onionAdHashedFilePath"
                 
         with open(inCSV, "rb") as inF:        
             reader = csv.reader(inF, delimiter=",")
@@ -32,7 +32,7 @@ def mover(inCSV, outCSV, nutchDumpPath):
                 domain = row[1].strip()
                 URL = row[3].strip()
                 path = row[4].strip()
-                record = [domain, URL]
+                record = [domain, URL, "", ""]
                 
                 hashedAdURL = hashlib.sha256(URL).hexdigest().upper()
 
@@ -45,7 +45,7 @@ def mover(inCSV, outCSV, nutchDumpPath):
                 #record.append(new_filename)
 
                 #construct Dump filepath   #onion/swehackmzys2gpmb/www
-                finalDumpPath = nutchDumpPath.rstrip("/") + "/" + "/".join(reversed(domain.split("."))) 
+                finalDumpPath = dumpPath.rstrip("/") + "/" + "/".join(reversed(domain.split("."))) 
                 if not os.path.exists(finalDumpPath):                    
                     os.makedirs(finalDumpPath)
                                     
@@ -53,7 +53,6 @@ def mover(inCSV, outCSV, nutchDumpPath):
                 record.append(finalDumpPath + "/" + hashedAdURL)
 
                 #pending files to be indexed using parser-indexer => feed darkDumpPoster the CSV file generated
-                #send PR to update no Page Title in DarkDumpPoster
 
                 writer.writerow(record)
 
@@ -63,8 +62,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser('dark Cron workflow')
     parser.add_argument('--inCSV', required=True)
     parser.add_argument('--outCSV', required=True)
-    parser.add_argument('--nutchDumpPath', required=True, help='absolute path to dump Dir')
+    parser.add_argument('--dumpPath', required=True, help='absolute path to dump Dir')
     args = parser.parse_args()
 
-    if args.inCSV and args.outCSV and args.nutchDumpPath: 
-        mover(args.inCSV, args.outCSV, args.nutchDumpPath)
+    if args.inCSV and args.outCSV and args.dumpPath: 
+        mover(args.inCSV, args.outCSV, args.dumpPath)
