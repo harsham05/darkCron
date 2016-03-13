@@ -26,7 +26,7 @@ cd /usr/local/memex/darkWeapons/dark_Cron_production
 python es_allSearch.py wea.txt outFiles/$outfile weapDir 1000 _type $yesterday
 
 updates=$yesterday"Updates.csv"
-python refactoredMover.py --inCSV outFiles/$outfile --outCSV updates/$updates --nutchDumpPath /data2/USCWeaponsStatsGathering/nutch/full_dump
+python refactoredMover.py --inCSV outFiles/$outfile --outCSV updates/$updates --dumpPath /data2/USCWeaponsStatsGathering/nutch/full_dump
 #cd /usr/local/memex/imagecat/tmp/parser-indexer
 #java -cp target/nutch-tika-solr-1.0-SNAPSHOT.jar edu.usc.cs.ir.cwork.files.DarkDumpPoster
 #-nutch /data2/USCWeaponsStatsGathering/nutch/runtime/local
