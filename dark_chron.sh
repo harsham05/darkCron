@@ -29,5 +29,6 @@ updates=$yesterday"Updates.csv"
 python refactoredMover.py --inCSV outFiles/$outfile --outCSV updates/$updates --dumpPath /data2/USCWeaponsStatsGathering/nutch/full_dump
 
 cd ~/imagecat/tmp/parser-indexer
-java -cp target/nutch-tika-solr-1.0-SNAPSHOT.jar edu.usc.cs.ir.cwork.files.DarkDumpPoster -nutch /data2/USCWeaponsStatsGathering/nutch/runtime/local -solr http://localhost:8983/solr/imagecatdev -timeout 70000 -list ~/darkWeapons/dark_Cron_production/updates/$updates
+# ***check Solr Core *****
+java -cp target/nutch-tika-solr-1.0-SNAPSHOT.jar edu.usc.cs.ir.cwork.files.DarkDumpPoster -nutch /data2/USCWeaponsStatsGathering/nutch/runtime/local -solr http://localhost:8983/solr/onionCore -timeout 70000 -list ~/darkWeapons/dark_Cron_production/updates/$updates
 echo "JOB COMPLETE"
