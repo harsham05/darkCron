@@ -16,19 +16,26 @@
 # limitations under the License.
 #
 #
-yesterday=$(date -d 'yesterday' '+%Y-%m-%d')
-outfile=$yesterday"weap.out"
+for i in {1..7}
+do
+  past_day=$(date -d "-$i day" '+%Y-%m-%d')
+  echo "Fetching & Ingesting for $past_day"
 
-#cd path/to/dark/script  #cd ~/Downloads/darkCron
-cd ~/darkWeapons/dark_Cron_production
+  outfile=$past_day"weap.out"
 
-#10000000 =>  **************** CHANGE THIS **************
-python es_allSearch.py wea.txt outFiles/$outfile weapDir 1000 _type $yesterday
+  #cd path/to/dark/script
+  cd ~/darkWeapons/dark_Cron_production
+  source dark.env
 
-updates=$yesterday"Updates.csv"
-python refactoredMover.py --inCSV outFiles/$outfile --outCSV updates/$updates --dumpPath /data2/USCWeaponsStatsGathering/nutch/full_dump
+  #10000000 =>  **************** CHANGE THIS **************
+  python es_allSearch.py wea.txt outFiles/$outfile weapDir 1000 _type $past_day
 
-cd ~/imagecat/tmp/parser-indexer
-# ***check Solr Core *****
-java -cp target/nutch-tika-solr-1.0-SNAPSHOT.jar edu.usc.cs.ir.cwork.files.DarkDumpPoster -nutch ~/darkWeapons/dark_Cron_production/nutch/runtime/local -solr http://localhost:8983/solr/onionCore -timeout 70000 -list ~/darkWeapons/dark_Cron_production/updates/$updates
+  updates=$past_day"Updates.csv"
+  python refactoredMover.py --inCSV outFiles/$outfile --outCSV updates/$updates --dumpPath /data2/USCWeaponsStatsGathering/nutch/full_dump
+
+  source ~/jdk8.sh
+  cd ~/imagecat/tmp/parser-indexer
+  # ***check Solr Core *****
+  java -cp target/nutch-tika-solr-1.0-SNAPSHOT.jar edu.usc.cs.ir.cwork.files.DarkDumpPoster -nutch ~/darkWeapons/dark_Cron_production/nutch/runtime/local -solr http://localhost:8983/solr/onionCore -timeout 70000 -list ~/darkWeapons/dark_Cron_production/updates/$updates
+done
 echo "JOB COMPLETE"
