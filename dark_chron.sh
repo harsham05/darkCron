@@ -33,6 +33,14 @@ do
   updates=$past_day"Updates.csv"
   python refactoredMover.py --inCSV outFiles/$outfile --outCSV updates/$updates --dumpPath /data2/USCWeaponsStatsGathering/nutch/full_dump
 
+  lineCtStr=$(wc -l updates/$updates)
+  lineCt=($lineCtStr)  
+  if [ $lineCt -eq 1 ]
+  then
+    echo "Skipping Empty file"  
+    continue
+  fi
+
   source ~/jdk8.sh
   cd ~/imagecat/tmp/parser-indexer
   # ***check Solr Core *****
